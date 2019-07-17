@@ -5,7 +5,6 @@ import users from "./users";
 import { Table } from "reactstrap";
 
 function ContactTable(props) {
-  
   function filterAll(users) {
     return filterRole(filterCampus(filterName(users)));
   }
@@ -32,14 +31,23 @@ function ContactTable(props) {
     if (search.isStudent && search.isTeacher) {
       return users;
     } else if (!search.isStudent && search.isTeacher) {
-      return users.filter(user => {
-        return user.role === "teacher";
-      });
+      return users.filter(user => user.role === "teacher");
     } else if (!search.isTeacher && search.isStudent) {
-      return users.filter(user => {
-        return user.role === "student";
-      });
-    } else { return []}
+      return users.filter(user => user.role === "student");
+    } else {
+      return [];
+    }
+  }
+
+  function resetFilter() {
+    setSearch({
+      name: "",
+      isStudent: true,
+      isTeacher: true,
+      campus: "all"
+    })
+    console.log("ping")
+
   }
 
   const [search, setSearch] = useState({
@@ -98,6 +106,7 @@ function ContactTable(props) {
             <option value="lisbon">lisbon</option>
             <option value="berlin">berlin</option>
           </select>
+          <button className="btn btn-danger" onClick={resetFilter}>Reset Filter</button>
         </div>
       </div>
       <Table striped bordered responsive>
