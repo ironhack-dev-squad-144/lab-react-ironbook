@@ -18,11 +18,11 @@ function ContactTable(props) {
   }
 
   function filterCampus(users) {
-    if (search.campus === "all") {
+    if (search.campus === "All") {
       return users;
     } else {
       return users.filter(user => {
-        return user.campus.toLowerCase() === search.campus;
+        return user.campus === search.campus;
       });
     }
   }
@@ -44,17 +44,24 @@ function ContactTable(props) {
       name: "",
       isStudent: true,
       isTeacher: true,
-      campus: "all"
-    })
-    console.log("ping")
-
+      campus: "All"
+    });
+    console.log("ping");
   }
+
+  let repeatedCampuses = users.map(user => user.campus);
+
+  let uniqueCampuses = repeatedCampuses.filter(
+    (campus, i) => repeatedCampuses.indexOf(campus) === i
+  );
+
+  console.log("unique:", uniqueCampuses);
 
   const [search, setSearch] = useState({
     name: "",
     isStudent: true,
     isTeacher: true,
-    campus: "all"
+    campus: "All"
   });
 
   function handleChange(e) {
@@ -101,12 +108,14 @@ function ContactTable(props) {
             Teacher{" "}
           </div>
           <select name="campus" value={search.campus} onChange={handleChange}>
-            <option value="all">all</option>
-            <option value="paris">paris</option>
-            <option value="lisbon">lisbon</option>
-            <option value="berlin">berlin</option>
+            <option value="All">All</option>
+            {uniqueCampuses.map((campus) => (
+              <option value={campus}>{campus}</option>
+            ))}
           </select>
-          <button className="btn btn-danger" onClick={resetFilter}>Reset Filter</button>
+          <button className="btn btn-danger" onClick={resetFilter}>
+            Reset Filter
+          </button>
         </div>
       </div>
       <Table striped bordered responsive>
