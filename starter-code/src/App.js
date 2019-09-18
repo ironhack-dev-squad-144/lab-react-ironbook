@@ -38,12 +38,14 @@ function App() {
   function filterUser(){
     let filterUser ="";
     filterUser = users.filter(user => user.firstName.toUpperCase().includes (search.searchValue.toUpperCase()) || user.lastName.toUpperCase().includes (search.searchValue.toUpperCase()))
-    if (search.isTeacher === true){
-     filterUser = filterUser.filter(user => user.role === "teacher")
+    if (!search.isTeacher || !search.isStudent){
+      if (search.isTeacher ===true){
+        filterUser = filterUser.filter(user => user.role === "teacher")
+      }
+      if (search.isStudent===true){
+        filterUser = filterUser.filter(user => user.role === "student")
+      }
     } 
-    if (search.isStudent===true){
-      filterUser = filterUser.filter(user => user.role === "student")
-    }
     if(search.city){
       filterUser = filterUser.filter(user => user.campus === search.city)
     }
@@ -83,6 +85,7 @@ function App() {
       <select name="city"
       onChange ={e=> handleChange (e)}
       >
+        <option value="">All campuses</option>
         {
           cities.map((c,i) => (  <option value={c} key = {i}>{c}</option>))
           }
